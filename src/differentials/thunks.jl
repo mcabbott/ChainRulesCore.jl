@@ -198,6 +198,7 @@ Base.convert(::Type{<:Thunk}, a::AbstractZero) = @thunk(a)
 
 """
     InplaceableThunk(val::Thunk, add!::Function)
+    @inplacethunk(expr, add!)
 
 A wrapper for a `Thunk`, that allows it to define an inplace `add!` function.
 
@@ -207,6 +208,9 @@ but it should do this more efficently than simply doing this directly.
 
 Most operations on an `InplaceableThunk` treat it just like a normal `Thunk`;
 and destroy its inplacability.
+
+The macro `@inplacethunk` saves writing `InplaceableThunk(@thunk(expr), add!)`,
+if you are constructing the thunk at the same time.
 """
 struct InplaceableThunk{T<:Thunk,F} <: AbstractThunk
     val::T
@@ -217,4 +221,10 @@ unthunk(x::InplaceableThunk) = unthunk(x.val)
 
 function Base.show(io::IO, x::InplaceableThunk)
     return print(io, "InplaceableThunk($(repr(x.val)), $(repr(x.add!)))")
+end
+
+@doc @doc InplaceableThunk
+macro inplacethunk(body, inplace)
+    func = Expr(:->, Expr(:tuple), Expr(:block, __source__, body))
+    :(InplaceableThunk(Thunk($(esc(func))), $(esc(inplace))))
 end

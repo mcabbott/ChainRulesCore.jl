@@ -5,11 +5,12 @@ using SparseArrays: SparseVector, SparseMatrixCSC
 using Compat: hasfield
 
 export frule, rrule  # core function
+
 # rule configurations
 export RuleConfig, HasReverseMode, NoReverseMode, HasForwardsMode, NoForwardsMode
 export frule_via_ad, rrule_via_ad
 # definition helper macros
-export @non_differentiable, @scalar_rule, @thunk, @not_implemented
+export @non_differentiable, @scalar_rule, @thunk, @inplacethunk, @not_implemented
 export ProjectTo, canonicalize, extern, unthunk  # differential operations
 export add!!  # gradient accumulation operations
 # differentials
