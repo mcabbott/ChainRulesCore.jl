@@ -187,7 +187,7 @@ $NO_RRULE_DOC
 See also [`ChainRulesCore.no_frule`](@ref).
 """
 function no_rrule end
-no_rrule(::Any, ::Vararg{Any}) = nothing
+no_rrule(::Any, ::Vararg{Any}) = missing
 
 """
 $(replace(NO_RRULE_DOC, "rrule"=>"frule"))
